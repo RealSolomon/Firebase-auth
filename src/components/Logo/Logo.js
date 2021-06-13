@@ -12,7 +12,7 @@ const LogoWrapper = styled.div`
 `;
 
 const Logo = () => {
-  return <LogoWrapper>Productivity</LogoWrapper>;
+  return <LogoWrapper>FB-AUTH</LogoWrapper>;
 };
 
 export default Logo;
