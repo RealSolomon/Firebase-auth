@@ -25,6 +25,7 @@ export default createGlobalStyle`
     --color-text: ${(props) => props.theme.colors.textColor};
     --color-white: ${(props) => props.theme.colors.whiteColor};
     --shadow: ${(props) => props.theme.colors.shadow};
+    --color-redError: ${(props) => props.theme.colors.errorRed};
     @media ${(props) => props.theme.mediaQueries.small} {
       font-size: 60%;
     }
