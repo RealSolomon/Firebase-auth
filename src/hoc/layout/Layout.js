@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import Navbar from '../../components/Navigation/Navbar/Navbar';
@@ -13,12 +14,16 @@ const MainWrapper = styled.main`
   justify-content: center;
 `;
 
-const Layout = ({ children }) => (
-  <>
-    <Navbar />
-    <SideDrawer />
-    <MainWrapper>{children}</MainWrapper>
-  </>
-);
+const Layout = ({ children }) => {
+  const loggedIn = useSelector((state) => state.firebase.auth);
+
+  return (
+    <>
+      <Navbar loggedIn={loggedIn} />
+      <SideDrawer loggedIn={loggedIn} />
+      <MainWrapper>{children}</MainWrapper>
+    </>
+  );
+};
 
 export default Layout;

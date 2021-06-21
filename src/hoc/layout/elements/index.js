@@ -13,9 +13,10 @@ export const FormWrapper = styled.div`
   max-width: 50rem;
   margin: 0 auto;
   border-radius: 1rem;
-  padding: 4rem 8rem;
+  padding: 10rem 8rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   background-color: ${(props) => props.theme.colors.mainDark};
   box-shadow: 0rem 0.5rem 3.5rem var(--shadow);
@@ -23,6 +24,8 @@ export const FormWrapper = styled.div`
 
 export const StyledForm = styled(Form)`
   display: flex;
+  position: relative;
+  align-items: center;
   width: 100%;
   flex-direction: column;
 `;
