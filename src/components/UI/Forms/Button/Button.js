@@ -11,6 +11,7 @@ const StyledButton = styled.button`
   font-weight: 700;
   box-shadow: 0rem 0.5rem 3.5rem var(--shadow);
   background-color: var(--color-mainLighter);
+  margin: 1.5rem 0 2rem 0;
   border: none;
   transition: all 0.2s;
   &:hover {

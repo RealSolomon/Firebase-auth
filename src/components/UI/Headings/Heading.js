@@ -11,7 +11,7 @@ const baseStyle = css`
 `;
 
 const Heading1 = styled.h1`
-  font-size: 2rem;
+  font-size: 2.5rem;
   text-transform: uppercase;
   ${baseStyle}
 `;
@@ -28,28 +28,28 @@ const Heading4 = styled.h4`
   ${baseStyle}
 `;
 
-const Heading = ({ children, color, noMargin, size }) => {
+const Heading = ({ children, color, bold, noMargin, size }) => {
   if (size === 'h1')
     return (
-      <Heading1 noMargin={noMargin} color={color}>
+      <Heading1 noMargin={noMargin} bold={bold} color={color}>
         {children}
       </Heading1>
     );
   if (size === 'h2')
     return (
-      <Heading2 noMargin={noMargin} color={color}>
+      <Heading2 noMargin={noMargin} bold={bold} color={color}>
         {children}
       </Heading2>
     );
   if (size === 'h3')
     return (
-      <Heading3 noMargin={noMargin} color={color}>
+      <Heading3 noMargin={noMargin} bold={bold} color={color}>
         {children}
       </Heading3>
     );
   if (size === 'h4')
     return (
-      <Heading4 noMargin={noMargin} color={color}>
+      <Heading4 noMargin={noMargin} bold={bold} color={color}>
         {children}
       </Heading4>
     );

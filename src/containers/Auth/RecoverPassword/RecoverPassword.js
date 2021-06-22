@@ -5,76 +5,73 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { FormWrapper, StyledForm } from '../../../hoc/layout/elements';
+import Heading from '../../../components/UI/Headings/Heading';
 import Input from '../../../components/UI/Forms/Input/Input';
 import Button from '../../../components/UI/Forms/Button/Button';
-import Heading from '../../../components/UI/Headings/Heading';
 import Message from '../../../components/UI/Message/Message';
 import * as actions from '../../../store/actions';
 
 const MessageWrapper = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: -2rem;
 `;
 
-const LoginSchema = Yup.object().shape({
+const RecoverSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email.')
     .required('The email is required!'),
-  password: Yup.string()
-    .required('The password is required!')
-    .min(8, 'The password is too short!'),
 });
 
-const Login = () => {
+const RecoverPassword = () => {
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.auth.recoverPassword);
+  console.log(loading);
+
   React.useEffect(() => {
     dispatch(actions.clean());
   }, []);
-  const { loading, error } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
 
   return (
     <Formik
       initialValues={{
         email: '',
-        password: '',
       }}
-      validationSchema={LoginSchema}
+      validationSchema={RecoverSchema}
       onSubmit={async (values, { setSubmitting }) => {
-        await dispatch(actions.signIn(values));
+        await dispatch(actions.recoverPassword(values));
         setSubmitting(false);
       }}
     >
       {({ isSubmitting, isValid }) => (
         <FormWrapper>
           <Heading noMargin size="h1" color="white">
-            Login into your account
+            Recover your password
           </Heading>
-          <Heading bold size="h4" color="white">
-            Fill in your details to login into your account
+          <Heading size="h4" bold color="white">
+            Type in your e-mail to recover your password
           </Heading>
           <StyledForm>
             <Field
               type="email"
               name="email"
-              placeholder="Your email..."
-              component={Input}
-            />
-            <Field
-              type="password"
-              name="password"
-              placeholder="Your password..."
+              placeholder="Type your email..."
               component={Input}
             />
             <Button
               disabled={!isValid || isSubmitting}
-              loading={loading ? 'Logging in...' : null}
+              loading={loading ? 'Sending recover email...' : null}
               type="submit"
             >
-              Login
+              Recover email
             </Button>
             <MessageWrapper>
               <Message error show={error}>
                 {error}
+              </Message>
+            </MessageWrapper>
+            <MessageWrapper>
+              <Message success show={error === false}>
+                Recover email sent successfully!
               </Message>
             </MessageWrapper>
           </StyledForm>
@@ -84,4 +81,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default RecoverPassword;
