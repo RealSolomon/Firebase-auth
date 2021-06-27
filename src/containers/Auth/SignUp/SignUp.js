@@ -1,5 +1,5 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
@@ -14,7 +14,7 @@ import * as actions from '../../../store/actions';
 
 const MessageWrapper = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: -2rem;
 `;
 
 const SignUpSchema = Yup.object().shape({
@@ -30,19 +30,19 @@ const SignUpSchema = Yup.object().shape({
     .email('Invalid email.')
     .required('The email is required.'),
   password: Yup.string()
-    .required('The password is required.')
-    .min(8, 'The password is too short'),
+    .required('The passoword is required.')
+    .min(8, 'The password is too short.'),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password'), null], `Password doestn't match.`)
+    .oneOf([Yup.ref('password'), null], `Password doesn't match`)
     .required('You need to confirm your password.'),
 });
 
-const SignUp = () => {
-  React.useEffect(() => {
-    dispatch(actions.clean());
-  }, []);
-  const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+const SignUp = ({ signUp, loading, error, cleanUp }) => {
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    };
+  }, [cleanUp]);
 
   return (
     <Formik
@@ -55,7 +55,7 @@ const SignUp = () => {
       }}
       validationSchema={SignUpSchema}
       onSubmit={async (values, { setSubmitting }) => {
-        await dispatch(actions.signUp(values));
+        await signUp(values);
         setSubmitting(false);
       }}
     >
@@ -65,7 +65,7 @@ const SignUp = () => {
             Sign up for an account
           </Heading>
           <Heading bold size="h4" color="white">
-            Fill in your details to refister your new account
+            Fill in your details to register your new account
           </Heading>
           <StyledForm>
             <Field
@@ -117,4 +117,14 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+const mapStateToProps = ({ auth }) => ({
+  loading: auth.loading,
+  error: auth.error,
+});
+
+const mapDispatchToProps = {
+  signUp: actions.signUp,
+  cleanUp: actions.clean,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

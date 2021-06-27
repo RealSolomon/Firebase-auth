@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
-import { useSelector, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { FormWrapper, StyledForm } from '../../../hoc/layout/elements';
 import Heading from '../../../components/UI/Headings/Heading';
 import Input from '../../../components/UI/Forms/Input/Input';
-import Button from '../../../components/UI/Forms/Button/Button';
 import Message from '../../../components/UI/Message/Message';
+import Button from '../../../components/UI/Forms/Button/Button';
 import * as actions from '../../../store/actions';
 
 const MessageWrapper = styled.div`
@@ -19,17 +19,15 @@ const MessageWrapper = styled.div`
 const RecoverSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email.')
-    .required('The email is required!'),
+    .required('The email is required.'),
 });
 
-const RecoverPassword = () => {
-  const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth.recoverPassword);
-  console.log(loading);
-
-  React.useEffect(() => {
-    dispatch(actions.clean());
-  }, []);
+const RecoverPassword = ({ error, loading, sendEmail, cleanUp }) => {
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    };
+  }, [cleanUp]);
 
   return (
     <Formik
@@ -38,7 +36,7 @@ const RecoverPassword = () => {
       }}
       validationSchema={RecoverSchema}
       onSubmit={async (values, { setSubmitting }) => {
-        await dispatch(actions.recoverPassword(values));
+        await sendEmail(values);
         setSubmitting(false);
       }}
     >
@@ -81,4 +79,14 @@ const RecoverPassword = () => {
   );
 };
 
-export default RecoverPassword;
+const mapStateToProps = ({ auth }) => ({
+  loading: auth.recoverPassword.loading,
+  error: auth.recoverPassword.error,
+});
+
+const mapDispatchToProps = {
+  sendEmail: actions.recoverPassword,
+  cleanUp: actions.clean,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecoverPassword);

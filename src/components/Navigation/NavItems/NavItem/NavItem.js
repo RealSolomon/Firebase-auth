@@ -17,14 +17,16 @@ const StyledNavLink = styled(NavLink)`
   padding: ${(props) => (props.mobile ? '.5rem 1rem' : '1rem')};
   margin: ${(props) => (props.mobile ? '2rem 0' : '0 1rem')};
   font-weight: 400;
-  color: ${(props) => props.theme.colors.whiteColor};
+  color: var(--color-white);
   transition: all 0.2s;
+
   &:hover {
     border-bottom: ${(props) =>
       props.mobile
         ? '1px solid var(--color-white)'
         : '2px solid var(--color-white);'};
   }
+
   &.active {
     border-bottom: ${(props) =>
       props.mobile

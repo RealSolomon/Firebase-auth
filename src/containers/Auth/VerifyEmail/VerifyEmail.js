@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { FormWrapper } from '../../../hoc/layout/elements';
@@ -11,25 +11,24 @@ import * as actions from '../../../store/actions';
 
 const MessageWrapper = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: -2rem;
 `;
 
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
-  position: relative;
 `;
 
-const VerifyEmail = () => {
-  const { loading, error } = useSelector((state) => state.auth.verifyEmail);
-  const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    dispatch(actions.clean());
-  }, []);
+const VerifyEmail = ({ sendVerification, error, loading, cleanUp }) => {
+  useEffect(() => {
+    return () => {
+      cleanUp();
+    };
+  }, [cleanUp]);
 
   return (
     <FormWrapper>
@@ -38,12 +37,12 @@ const VerifyEmail = () => {
           Verify your email
         </Heading>
         <Heading color="white" bold size="h4">
-          Please, go to your email inbox and verify.
+          Go to your email inbox, and please verify your email.
         </Heading>
         <Button
           loading={loading ? 'Sending email...' : null}
           disabled={loading}
-          onClick={() => dispatch(actions.verifyEmail())}
+          onClick={() => sendVerification()}
         >
           Re-send verification email
         </Button>
@@ -62,4 +61,14 @@ const VerifyEmail = () => {
   );
 };
 
-export default VerifyEmail;
+const mapStateToProps = ({ auth }) => ({
+  loading: auth.verifyEmail.loading,
+  error: auth.verifyEmail.error,
+});
+
+const mapDispatchToProps = {
+  sendVerification: actions.verifyEmail,
+  cleanUp: actions.clean,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(VerifyEmail);

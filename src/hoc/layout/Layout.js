@@ -1,6 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 import Navbar from '../../components/Navigation/Navbar/Navbar';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
@@ -14,16 +14,16 @@ const MainWrapper = styled.main`
   justify-content: center;
 `;
 
-const Layout = ({ children }) => {
-  const loggedIn = useSelector((state) => state.firebase.auth);
+const Layout = ({ children, loggedIn }) => (
+  <>
+    <Navbar loggedIn={loggedIn} />
+    <SideDrawer loggedIn={loggedIn} />
+    <MainWrapper>{children}</MainWrapper>
+  </>
+);
 
-  return (
-    <>
-      <Navbar loggedIn={loggedIn} />
-      <SideDrawer loggedIn={loggedIn} />
-      <MainWrapper>{children}</MainWrapper>
-    </>
-  );
-};
+const mapStateToProps = ({ firebase }) => ({
+  loggedIn: firebase.auth,
+});
 
-export default Layout;
+export default connect(mapStateToProps)(Layout);

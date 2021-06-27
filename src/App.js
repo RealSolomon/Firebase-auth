@@ -1,19 +1,18 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Layout from './hoc/layout/Layout';
-import Todos from './containers/Todos/Todos';
+import Home from './containers/Home/Home';
 import Login from './containers/Auth/Login/Login';
 import SignUp from './containers/Auth/SignUp/SignUp';
-import Logout from './containers/Auth/Logout/Logout';
+import Profile from './containers/Auth/Profile/Profile';
 import VerifyEmail from './containers/Auth/VerifyEmail/VerifyEmail';
 import RecoverPassword from './containers/Auth/RecoverPassword/RecoverPassword';
+import Logout from './containers/Auth/Logout/Logout';
+import Todos from './containers/Todos/Todos';
 
-const App = () => {
-  const loggedIn = useSelector((state) => state.firebase.auth.uid);
-  const { emailVerified } = useSelector((state) => state.firebase.auth);
-
+const App = ({ loggedIn, emailVerified }) => {
   let routes;
 
   if (loggedIn && !emailVerified) {
@@ -28,6 +27,7 @@ const App = () => {
     routes = (
       <Switch>
         <Route exact path="/" component={Todos} />
+        <Route exact path="/profile" component={Profile} />
         <Route exact path="/logout" component={Logout} />
         <Redirect to="/" />
       </Switch>
@@ -46,4 +46,9 @@ const App = () => {
   return <Layout>{routes}</Layout>;
 };
 
-export default App;
+const mapStateToProps = ({ firebase }) => ({
+  loggedIn: firebase.auth.uid,
+  emailVerified: firebase.auth.emailVerified,
+});
+
+export default connect(mapStateToProps)(App);

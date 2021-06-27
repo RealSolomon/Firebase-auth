@@ -7,29 +7,25 @@ const InputWrapper = styled.div`
   position: relative;
   margin-bottom: 3.5rem;
   flex-direction: column;
-
-  &:last-of-type {
-    margin-bottom: 4.5rem;
-  }
 `;
 
 const StyledInput = styled.input`
-  padding: 1rem 2rem;
+  padding: 1.2rem 2rem;
   width: 100%;
-  background-color: ${(props) => props.theme.colors.mainLight};
-  color: ${(props) => props.theme.colors.whiteColor};
+  background-color: var(--color-mainLight);
+  color: var(--color-white);
   font-weight: 500;
   font-size: 1.2rem;
   border-radius: 2rem;
   border: none;
 
   &::placeholder {
-    color: ${(props) => props.theme.colors.whiteColor};
+    color: var(--color-white);
   }
 `;
 
 const Error = styled.div`
-  color: var(--color-redError);
+  color: var(--color-errorRed);
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
   opacity: ${({ show }) => (show ? '1' : '0')};
   transform: translateY(${({ show }) => (show ? '20px' : '10px')});

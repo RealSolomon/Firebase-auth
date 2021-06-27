@@ -1,14 +1,16 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
 
-const Logout = () => {
-  const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    dispatch(actions.signOut());
-  }, [dispatch]);
+const Logout = ({ logout }) => {
+  useEffect(() => {
+    logout();
+  }, [logout]);
   return null;
 };
 
-export default Logout;
+const mapDispatchToProps = {
+  logout: actions.signOut,
+};
+
+export default connect(null, mapDispatchToProps)(Logout);

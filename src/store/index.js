@@ -10,7 +10,7 @@ import rootReducer from './reducers';
 const rrfConfig = {
   userProfile: 'users',
   useFirestoreForProfile: true, // Firestore for Profile instead of Realtime DB
-  attachAuthIsReady: true,
+  attachAuthIsReady: true, // attaches auth is ready promise to store
 };
 
 const composeEnhancers =
