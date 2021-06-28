@@ -27,11 +27,9 @@ const DeleteWrapper = styled.div`
   font-weight: 700;
   margin-top: 2rem;
   transition: all 0.2s;
-
   &:hover {
     transform: translateY(-3px);
   }
-
   &:active {
     transform: translateY(2px);
   }
@@ -58,7 +56,7 @@ const ProfileSchema = Yup.object().shape({
     .required('The email is required.'),
   password: Yup.string().min(8, 'The password is too short.'),
   confirmPassword: Yup.string().when('password', {
-    is: (password) => password.length > 0,
+    is: (password) => password,
     then: Yup.string()
       .required('You need to confirm your password.')
       .oneOf([Yup.ref('password'), null], `Password doesn't match`),
